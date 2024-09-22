@@ -1,1 +1,1 @@
-# CookieJarGame
+# 2DGame.CookieJar
