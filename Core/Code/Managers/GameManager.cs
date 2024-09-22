@@ -13,15 +13,15 @@ public partial class GameManager : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionPressed("ui_cancel"))
+		if (Input.IsActionJustPressed("ui_cancel"))
 		{
-			if (Input.MouseMode == Input.MouseModeEnum.Captured)
+			if (Input.MouseMode != Input.MouseModeEnum.Visible)
 			{
-				Input.SetMouseMode(Input.MouseModeEnum.Captured);
+				Input.SetMouseMode(Input.MouseModeEnum.Visible);
 			}
 			else
 			{
-				Input.SetMouseMode(Input.MouseModeEnum.Visible);
+				Input.SetMouseMode(Input.MouseModeEnum.Captured);
 			}
 		}
 	}
