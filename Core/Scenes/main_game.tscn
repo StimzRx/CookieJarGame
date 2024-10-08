@@ -2,19 +2,19 @@
 
 [ext_resource type="Texture2D" uid="uid://dv5l3olc2hmcy" path="res://Core/Assets/Textures/Jar/jar_texture.png" id="1_l8n4s"]
 [ext_resource type="Script" path="res://Core/Code/Managers/GameManager.cs" id="1_ppjpg"]
-[ext_resource type="Texture2D" uid="uid://tjgv24684363" path="res://icon.svg" id="2_dfyg1"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tch8m"]
-size = Vector2(128.5, 127.5)
+[ext_resource type="Script" path="res://Core/Code/Managers/ItemsManager.cs" id="2_mi0vb"]
+[ext_resource type="PackedScene" uid="uid://da344m2a2p4sk" path="res://Core/Scenes/Player.tscn" id="3_tdsya"]
 
 [node name="MainGame" type="Node2D"]
 
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("Hand", "JarMinPos", "JarMaxPos")]
+[node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_ppjpg")
-Hand = NodePath("../HandCharacter")
-HandSize = Vector2(128, 128)
-JarMinPos = NodePath("../JarCharacter/MinPosMarker")
-JarMaxPos = NodePath("../JarCharacter/MaxPosMarker")
+
+[node name="ItemManager" type="Node" parent="." node_paths=PackedStringArray("_items", "_itemGhosts", "_itemSprites")]
+script = ExtResource("2_mi0vb")
+_items = []
+_itemGhosts = []
+_itemSprites = []
 
 [node name="JarCharacter" type="StaticBody2D" parent="."]
 
@@ -32,12 +32,7 @@ position = Vector2(142, 105)
 [node name="MaxPosMarker" type="Marker2D" parent="JarCharacter"]
 position = Vector2(846, 104)
 
-[node name="HandCharacter" type="CharacterBody2D" parent="."]
+[node name="Player" parent="." node_paths=PackedStringArray("JarMinPos", "JarMaxPos") instance=ExtResource("3_tdsya")]
 position = Vector2(203, 108)
-motion_mode = 1
-
-[node name="Sprite2D" type="Sprite2D" parent="HandCharacter"]
-texture = ExtResource("2_dfyg1")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HandCharacter"]
-shape = SubResource("RectangleShape2D_tch8m")
+JarMinPos = NodePath("../JarCharacter/MinPosMarker")
+JarMaxPos = NodePath("../JarCharacter/MaxPosMarker")

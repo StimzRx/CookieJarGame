@@ -1,60 +1,58 @@
 using Godot;
+using System;
+using System.Threading.Tasks;
+
+/* File Name: GameManager.cs
+ * Date Modified: 10/5/2024
+ * Author(s): Skillful
+ * Description: This Script handles the 
+ * state of the game.
+ */
 
 namespace CookieJar.Managers;
-
 public partial class GameManager : Node
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		Input.MouseMode = Input.MouseModeEnum.Captured;
-	}
+    #region Variables:
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		if (Input.IsActionJustPressed("ui_cancel"))
-		{
-			if (Input.MouseMode != Input.MouseModeEnum.Visible)
-			{
-				Input.SetMouseMode(Input.MouseModeEnum.Visible);
-			}
-			else
-			{
-				Input.SetMouseMode(Input.MouseModeEnum.Captured);
-			}
-		}
-	}
+    [Export]
+    private GameState _gameState;
+    private bool _stateChanged;
+    public static event Action<GameState> OnGameStateChanged;
 
-	public override void _UnhandledInput(InputEvent @event)
-	{
-		if (@event is InputEventMouseMotion eventMouseMotion)
-		{
-			Vector2 tmpPos = Hand.GlobalPosition;
-			tmpPos.X += eventMouseMotion.Relative.X;
+    #endregion
 
-			float halfHandSize = HandSize.X / 2f;
-			
-			if (tmpPos.X < JarMinPos.GlobalPosition.X + halfHandSize)
-				tmpPos.X = JarMinPos.GlobalPosition.X + halfHandSize;
-			if(tmpPos.X > JarMaxPos.GlobalPosition.X - halfHandSize)
-				tmpPos.X = JarMaxPos.GlobalPosition.X - halfHandSize;
-			
-			Hand.GlobalPosition = tmpPos;
-		}
-		
-		base._UnhandledInput(@event);
-	}
+    #region Enumerators:
 
-	[Export]
-	public CharacterBody2D Hand { get; private set; }
-	
-	[Export]
-	public Vector2 HandSize { get; private set; }
+    public enum GameState
+    {
+        Playing,
+        GameOver
+    }
 
-	[Export]
-	public Marker2D JarMinPos { get; private set; }
+    #endregion
 
-	[Export]
-	public Marker2D JarMaxPos { get; private set; }
+    #region Public Behaviors:
+
+    public async Task UpdateGameState(GameState newState)
+    {
+        _gameState = newState;
+
+        switch (newState)
+        {
+            case GameState.Playing:
+                GD.Print("In Playing State");
+                break;
+            case GameState.GameOver:
+                GD.Print("In GameOver State");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        }
+
+        OnGameStateChanged?.Invoke(newState);
+        await Task.Yield();
+    }
+
+    #endregion
+
 }

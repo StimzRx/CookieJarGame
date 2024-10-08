@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://5g58ee6ruhfp"]
+
+[ext_resource type="Texture2D" uid="uid://db5e2oagj3kh5" path="res://Core/Assets/Textures/Temp/TestItems.png" id="1_f8l7t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_brnyd"]
+radius = 8.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5rril"]
+atlas = ExtResource("1_f8l7t")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w8uyh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5rril")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="TestItem" type="Node2D"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+mass = 8.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CircleShape2D_brnyd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="RigidBody2D"]
+sprite_frames = SubResource("SpriteFrames_w8uyh")
+frame_progress = 0.288206
